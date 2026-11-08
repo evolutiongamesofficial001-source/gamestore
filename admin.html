@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Admin · Evolution Game Store</title><link rel="icon" href="favicon.png"><link rel="stylesheet" href="style.css">
+<style>body{padding:24px}.wrap{max-width:980px;margin:auto}.f2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.f2 .full{grid-column:1/-1}
+.lbl{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--mut);font-weight:600;text-transform:uppercase}
+.prev{width:90px;height:90px;border-radius:8px;object-fit:cover;background:var(--panel2)}.prev.w{width:160px;height:90px}
+.pv{display:flex;gap:14px;align-items:center}@media(max-width:700px){.f2{grid-template-columns:1fr}}</style></head>
+<body><div class="wrap">
+<div id="lock" class="box" style="max-width:380px;margin:80px auto"><img src="logo.png" style="width:64px;border-radius:14px;margin-bottom:10px"><h2>Painel Admin</h2><br>
+<input id="pw" type="password" placeholder="Senha do admin"><br><br><button class="btn btn-primary btn-block" onclick="unlock()">Entrar</button></div>
+
+<div id="panel" class="hidden">
+<h1 class="ph-title">Evolution Game Store · Admin</h1><p class="ph-sub">Cadastre jogos no Firebase de jogos. Sem link = “Em breve”.</p>
+<div class="box" style="margin-bottom:20px"><h3 id="ftitle">Novo jogo</h3>
+<div class="f2">
+<label class="lbl">ID do jogo<input id="id" placeholder="auto"></label>
+<label class="lbl">Nome<input id="nome"></label>
+<label class="lbl">Produtora<input id="produtora"></label>
+<label class="lbl">Peso (ex: 12 GB)<input id="peso"></label>
+<label class="lbl">Classificação indicativa<select id="classificacao"><option>L</option><option>10</option><option>12</option><option>14</option><option>16</option><option>18</option></select></label>
+<label class="lbl">Valor (0 = grátis)<input id="valor" type="number" min="0" step="0.01" value="0"></label>
+<label class="lbl">Gêneros (separe por vírgula)<input id="genero" placeholder="Ação, Aventura"></label>
+<label class="lbl">Lançamento<input id="lancamento" type="date"></label>
+<label class="lbl">Versão<input id="versao"></label>
+<label class="lbl">Idiomas<input id="idiomas" placeholder="Português, Inglês"></label>
+<label class="lbl full">Descrição<textarea id="descricao" rows="4"></textarea></label>
+<label class="lbl full">Requisitos do sistema<textarea id="requisitos" rows="3"></textarea></label>
+<label class="lbl full">Link do Pixeldrain (vazio = Em breve)<input id="link" placeholder="https://pixeldrain.com/u/XXXXXXXX"></label>
+<div class="lbl pv"><img id="pc" class="prev"><div>Capa (quadrada)<br><input type="file" id="fc" accept="image/*"></div></div>
+<div class="lbl pv"><img id="pb" class="prev w"><div>Banner<br><input type="file" id="fb" accept="image/*"></div></div>
+</div><br><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-primary" onclick="save()">Salvar jogo</button><button class="btn" onclick="clearForm()">Limpar</button><button class="btn" onclick="importLocal()">Importar jogos.json</button></div></div>
+<div id="list"></div></div></div>
+<script>
+const ADMIN_PASS='evolution@admin'; // TROQUE essa senha
+const DB='https://project-8231730293140055887-default-rtdb.asia-southeast1.firebasedatabase.app';
+const $=s=>document.querySelector(s);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let games=[],capa='',banner='';
+async function api(p,m='GET',b){const r=await fetch(`${DB}/${p}.json`,{method:m,headers:{'Content-Type':'application/json'},body:b===undefined?undefined:JSON.stringify(b)});if(!r.ok)throw new Error(r.status);return r.json()}
+function unlock(){if($('#pw').value!==ADMIN_PASS)return alert('Senha incorreta');$('#lock').classList.add('hidden');$('#panel').classList.remove('hidden');load()}
+async function load(){const d=await api('jogos');games=d?(Array.isArray(d)?d:Object.values(d)).filter(Boolean):[];render()}
+function render(){$('#list').innerHTML=games.map(g=>`<div class="row"><img src="${esc(g.capa)}" onerror="this.style.visibility='hidden'"><div class="grow"><h3>${esc(g.nome)} <small style="color:var(--mut)">#${esc(g.id)}</small></h3><div class="dev">${esc(g.produtora)} · ${esc(g.peso||'—')} · ${g.link?'Disponível':'Em breve'}</div></div><div class="acts"><button class="btn btn-sm" onclick="edit('${esc(g.id)}')">Editar</button><button class="btn btn-sm btn-danger" onclick="del('${esc(g.id)}')">Excluir</button></div></div>`).join('')||'<div class="empty">Nenhum jogo no Firebase ainda. Clique em “Importar jogos.json”.</div>'}
+function img(file,w,h){return new Promise(res=>{const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');const s=Math.max(w/i.width,h/i.height),dw=i.width*s,dh=i.height*s;x.drawImage(i,(w-dw)/2,(h-dh)/2,dw,dh);res(c.toDataURL('image/jpeg',.82))};i.src=r.result};r.readAsDataURL(file)})}
+$('#fc').onchange=async e=>{if(e.target.files[0]){capa=await img(e.target.files[0],600,600);$('#pc').src=capa}};
+$('#fb').onchange=async e=>{if(e.target.files[0]){banner=await img(e.target.files[0],1280,720);$('#pb').src=banner}};
+const F=['id','nome','produtora','peso','classificacao','valor','descricao','link','genero','lancamento','versao','idiomas','requisitos'];
+function clearForm(){F.forEach(k=>$('#'+k).value=k==='valor'?0:k==='classificacao'?'L':'');capa=banner='';$('#pc').removeAttribute('src');$('#pb').removeAttribute('src');$('#ftitle').textContent='Novo jogo'}
+function edit(id){const g=games.find(x=>x.id==id);F.forEach(k=>$('#'+k).value=Array.isArray(g[k])?g[k].join(', '):(g[k]??''));capa=g.capa||'';banner=g.banner||'';$('#pc').src=capa;$('#pb').src=banner;$('#ftitle').textContent='Editando #'+id;scrollTo(0,0)}
+async function save(){const g={};F.forEach(k=>g[k]=$('#'+k).value.trim());if(!g.nome)return alert('Informe o nome');
+ g.id=g.id||String(Math.max(0,...games.map(x=>parseInt(x.id)||0))+1).padStart(3,'0');g.id=g.id.replace(/[^\w-]/g,'');g.valor=parseFloat(g.valor)||0;g.genero=g.genero.split(',').map(x=>x.trim()).filter(Boolean);g.capa=capa;g.banner=banner;
+ await api('jogos/'+g.id,'PUT',g);clearForm();await load();alert('Salvo!')}
+async function del(id){if(confirm('Excluir jogo #'+id+'?')){await api('jogos/'+id,'DELETE');load()}}
+async function importLocal(){if(!confirm('Importar o jogos.json local para o Firebase? (sobrescreve IDs iguais)'))return;
+ const l=await (await fetch('jogos.json')).json();for(const g of l)await api('jogos/'+g.id,'PUT',g);await load();alert('Importados '+l.length+' jogos')}
+</script></body></html>

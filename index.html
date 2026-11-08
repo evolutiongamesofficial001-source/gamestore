@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Evolution Game Store</title>
+<meta name="theme-color" content="#0b0d14">
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- AUTENTICAÇÃO (obrigatória) -->
+<div id="auth" class="auth">
+  <div class="auth-card">
+    <img src="logo.png" class="auth-logo" alt="Evolution Game Store">
+    <h1>EVOLUTION <span>GAME STORE</span></h1>
+    <p class="auth-sub">Entre para acessar a loja</p>
+    <div class="tabs">
+      <button class="tab on" data-tab="login">Entrar</button>
+      <button class="tab" data-tab="register">Criar conta</button>
+    </div>
+
+    <form id="form-login" class="form">
+      <label>E-mail ou usuário<input id="l-id" autocomplete="username" required></label>
+      <label>Senha<input id="l-pass" type="password" autocomplete="current-password" required></label>
+      <div class="err" id="l-err"></div>
+      <button class="btn btn-primary btn-block" type="submit">Entrar</button>
+    </form>
+
+    <form id="form-register" class="form hidden">
+      <label>E-mail<input id="r-email" type="email" autocomplete="email" required></label>
+      <label>Usuário<input id="r-user" autocomplete="username" maxlength="20" placeholder="letras, números e _" required></label>
+      <label>Data de nascimento<input id="r-birth" type="date" required></label>
+      <label>Senha<input id="r-pass" type="password" minlength="6" autocomplete="new-password" required></label>
+      <div class="err" id="r-err"></div>
+      <button class="btn btn-primary btn-block" type="submit">Criar conta</button>
+    </form>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="bgfx"></div>
+<div id="app" class="hidden">
+  <header class="topbar">
+    <a class="brand" href="#/"><img src="logo.png" alt=""><span>EVOLUTION<small>GAME STORE</small></span></a>
+    <nav class="topnav" id="topnav">
+      <a href="#/" data-r="store">Loja</a>
+      <a href="#/biblioteca" data-r="library">Biblioteca</a>
+      <a href="#/espera" data-r="wish">Lista de espera <b id="wish-count" class="pill hidden"></b></a>
+    </nav>
+    <div class="search">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="q" type="search" placeholder="Pesquisar jogos, produtoras..." autocomplete="off">
+    </div>
+    <a class="gear" href="#/config" data-r="settings" title="Configurações"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg></a>
+    <a class="userchip" href="#/conta"><span class="avatar" id="u-avatar">?</span><span id="u-name" class="u-name"></span></a>
+  </header>
+
+  <main id="view"></main>
+
+  <footer class="footer">
+    <img src="logo.png" alt=""><span>© Evolution Game Store</span>
+  </footer>
+
+  <nav class="bottomnav" id="bottomnav">
+    <a href="#/" data-r="store"><svg viewBox="0 0 24 24"><path d="M3 10l9-7 9 7v10a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>Loja</a>
+    <a href="#/biblioteca" data-r="library"><svg viewBox="0 0 24 24"><path d="M4 4h4v16H4zM10 4h4v16h-4zM16 6l4-1 3 15-4 1z"/></svg>Biblioteca</a>
+    <a href="#/espera" data-r="wish"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Espera</a>
+    <a href="#/conta" data-r="account"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0116 0"/></svg>Conta</a>
+  </nav>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+EVOLUTION GAME STORE
+Arquivos: index.html, style.css, app.js, admin.html, jogos.json (pretty), jogos.modelo.json (modelo/ajuda), logo.png, favicon.png
+- Contas: https://uuuuu-52b5b-default-rtdb.firebaseio.com  (usuarios/ e emails/)
+- Jogos : https://project-8231730293140055887-default-rtdb.asia-southeast1.firebasedatabase.app (jogos/)
+1) Suba a pasta no GitHub Pages (ou qualquer host https).
+2) Abra admin.html (senha em ADMIN_PASS, troque!) e clique em "Importar jogos.json".
+3) Regras dos dois Realtime Databases precisam permitir leitura/escrita (".read": true, ".write": true).
+Jogo sem link = "Em breve". Celular: só ver/pesquisar/conta (sem botão de download).
+V2: data de nascimento no cadastro, estrelas + comentários (500 caracteres), contagem de pessoas com o jogo na biblioteca, página de Configurações (#/config).
+Firebase de contas agora também usa: avaliacoes/<idJogo>/<usuario> e bibliotecas/<idJogo>/<usuario>.
+Contas antigas (com "idade") continuam funcionando; podem informar o nascimento em Configurações > Conta.

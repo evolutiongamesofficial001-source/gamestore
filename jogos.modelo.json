@@ -1,0 +1,42 @@
+{
+  "_ajuda": {
+    "id": "Texto único, ex: 009",
+    "nome": "Nome do jogo",
+    "produtora": "Empresa que produziu",
+    "descricao": "Texto livre",
+    "genero": [
+      "Ação",
+      "RPG"
+    ],
+    "classificacao": "L, 10, 12, 14, 16 ou 18",
+    "peso": "Ex: 25 GB",
+    "valor": "Número. 0 = Grátis. Ex: 59.9",
+    "lancamento": "AAAA-MM-DD",
+    "versao": "Ex: 1.0.3",
+    "idiomas": "Ex: Português, Inglês",
+    "requisitos": "Texto livre com requisitos mínimos/recomendados",
+    "link": "Link do Pixeldrain. Vazio = EM BREVE",
+    "capa": "Imagem QUADRADA em base64 (data:image/jpeg;base64,...)",
+    "banner": "Imagem larga 16:9 em base64"
+  },
+  "jogo_exemplo": {
+    "id": "009",
+    "nome": "Nome do Jogo",
+    "produtora": "Produtora",
+    "descricao": "Descrição do jogo.",
+    "genero": [
+      "Ação",
+      "Aventura"
+    ],
+    "classificacao": "16",
+    "peso": "20 GB",
+    "valor": 0,
+    "lancamento": "2026-01-01",
+    "versao": "1.0",
+    "idiomas": "Português, Inglês",
+    "requisitos": "Mínimo: CPU i5 / 8 GB RAM / GTX 1050\nRecomendado: CPU i7 / 16 GB RAM / RTX 2060",
+    "link": "https://pixeldrain.com/u/XXXXXXXX",
+    "capa": "",
+    "banner": ""
+  }
+}
